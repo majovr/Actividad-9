@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\SuperheroesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,5 +15,22 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
+});
+
+/* Route::get('/superheroes', function () {
+    return view('superheroes.index');
+});
+Route::get('superheroes/create', [SuperheroesController::class,'create']);
+*/
+Route::resource('superheroes',SuperheroesController::class);
+
+Auth::routes();
+
+Route::get('/home', [SuperheroesController::class, 'index'])->name('home');
+
+
+Route::group(['middleware' => 'auth'], function () {
+
+    Route::get('/', [SuperheroesController::class, 'index'])->name('home');
 });
